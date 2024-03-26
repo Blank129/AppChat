@@ -111,7 +111,45 @@ public class ChatActivity extends BaseActivity {
         binding.inputMessage.setText(null);
     }
 
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
+    private void sendNotification(String messageBody) {
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call,@NonNull Response<String> response) {
+                if(response.isSuccessful()){
+                    try {
+                        if(response.body()!= null){
+                            JSONObject responseJson = new JSONObject(response.body());
+                            JSONArray results = responseJson.getJSONArray("results");
+                            if(responseJson.getInt("failure") == 1){
+                                JSONObject error = (JSONObject) results.get(0);
+                                showToast(error.getString("error"));
+                                return;
+                            }
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    showToast("Notification sent successfully");
+                }else {
+                    showToast("Error: " + response.code());
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call,@NonNull Throwable t) {
+                showToast(t.getMessage());
+
+            }
+        });
+    }
 
     //notify on-off
     private void listenAvailabilityOfReceiver(){
@@ -128,13 +166,13 @@ public class ChatActivity extends BaseActivity {
                     ).intValue();
                     isReceiverAvailable = availability == 1;
                 }
+                receiverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
             }
             if(isReceiverAvailable){
                 binding.textAvailability.setVisibility(View.VISIBLE);
             } else {
                 binding.textAvailability.setVisibility(View.GONE);
             }
-
         });
     }
 
