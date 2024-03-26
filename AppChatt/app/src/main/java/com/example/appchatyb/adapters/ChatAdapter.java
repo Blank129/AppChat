@@ -17,12 +17,16 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final List<ChatMessage> chatMessages;
 
-    private final Bitmap receiverProfileImage;
+    private Bitmap receiverProfileImage;
 
     private final String senderId;
 
     public static final int VIEW_TYPE_SENT =1;
     public static final int VIEW_TYPE_RECEIVED =2;
+
+    public void setReceiverProfileImage(Bitmap bitmap){
+        receiverProfileImage = bitmap;
+    }
 
     public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
         this.chatMessages = chatMessages;
@@ -50,7 +54,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     )
             );
         }
-
     }
 
     @Override
@@ -60,7 +63,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         } else {
             ((ReceivedMessageViewHolder)holder).setData(chatMessages.get(position),receiverProfileImage);
         }
-
     }
 
     @Override
