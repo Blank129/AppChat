@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.appchatyb.Class.SignInProxy;
+import com.example.appchatyb.Interface.IProxy;
 import com.example.appchatyb.databinding.ActivitySignInBinding;
 import com.example.appchatyb.utilities.Constants;
 import com.example.appchatyb.utilities.PreferenceManager;
@@ -37,17 +39,16 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     //giống kiểu onClick button
-    private void setListeners(){
+    private void setListeners() {
         binding.textCreateNewAccount.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));
         binding.buttonSignIn.setOnClickListener(v -> {
-            if(isValidSignInDetails()){
-                signIn();
-            }
+            IProxy proxySignIn = new SignInProxy(this);
+            proxySignIn.signIn();
         });
     }
 
-    private void signIn(){
+    public void signIn(){
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
@@ -106,7 +107,7 @@ public class SignInActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
     }
 
-    private Boolean isValidSignInDetails(){
+    public Boolean isValidSignInDetails(){
         if(binding.inputEmail.getText().toString().trim().isEmpty()){
             showToast("Enter email");
             return false;
