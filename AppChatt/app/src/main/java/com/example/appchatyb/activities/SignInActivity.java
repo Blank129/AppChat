@@ -8,15 +8,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appchatyb.Class.SignInProxy;
-import com.example.appchatyb.Interface.IProxy;
+import com.example.appchatyb.Proxy.SignInProxy;
+import com.example.appchatyb.Proxy.IProxy;
 import com.example.appchatyb.databinding.ActivitySignInBinding;
 import com.example.appchatyb.utilities.Constants;
 import com.example.appchatyb.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
 
 public class SignInActivity extends AppCompatActivity {
 

@@ -1,6 +1,5 @@
-package com.example.appchatyb.Class;
+package com.example.appchatyb.Proxy;
 
-import com.example.appchatyb.Interface.IProxy;
 import com.example.appchatyb.activities.SignInActivity;
 public class SignInProxy implements IProxy {
     private SignInActivity signInActivity;
